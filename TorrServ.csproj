@@ -1,0 +1,31 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.2</TargetFramework>
+    <UserSecretsId>aspnet-TorrServ-FA191E85-2DFD-4C99-A3DC-A1097287A590</UserSecretsId>
+    <AspNetCoreHostingModel>InProcess</AspNetCoreHostingModel>
+  </PropertyGroup>
+
+
+  <ItemGroup>
+    <PackageReference Include="Hangfire.AspNetCore" Version="1.7.9" />
+    <PackageReference Include="Hangfire.Core" Version="1.7.9" />
+    <PackageReference Include="Hangfire.Dashboard.Authorization" Version="3.0.0" />
+    <PackageReference Include="Hangfire.SqlServer" Version="1.7.9" />
+    <PackageReference Include="Microsoft.AspNetCore.App" />
+    <PackageReference Include="Microsoft.AspNetCore.Razor.Design" Version="2.2.0" PrivateAssets="All" />
+    <PackageReference Include="Serilog.AspNetCore" Version="3.2.0" />
+  </ItemGroup>
+
+
+  <ItemGroup>
+    <ProjectReference Include="..\AFINNService\AFINNService.csproj" />
+    <ProjectReference Include="..\CommentService\CommentService.csproj" />
+    <ProjectReference Include="..\LemmatizationService\LemmatizationService.csproj" />
+    <ProjectReference Include="..\MoviesDownloader\MoviesDownloader.csproj" />
+    <ProjectReference Include="..\TorrServCore\TorrServCore.csproj" />
+    <ProjectReference Include="..\TorrServData\TorrServData.csproj" />
+    <ProjectReference Include="..\TorrServRepositories\TorrServRepositories.csproj" />
+  </ItemGroup>
+
+</Project>
