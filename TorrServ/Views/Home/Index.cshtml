@@ -1,0 +1,63 @@
+﻿@model IEnumerable<TorrServData.Models.TorrentMovie>
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Bootstrap Example</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <script src="~/js/homeindex.js"></script>
+
+</head>
+<body>
+
+   
+    <div class="container">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Title</th>
+                    <th>Genre</th>
+                    <th>Country</th>
+                    <th>EarOfIssue</th>
+                    <th>VideoQuality</th>
+                    <th>Size</th>
+                    <th>CommIndex</th>
+                    <th>Downloads</th>
+                    <th>PathDowLoad</th>
+                </tr>
+            </thead>
+            <tbody>
+
+                @foreach (var mov in Model)
+                {
+
+                    <tr class="StrTab">
+                        <td>@mov.title</td>
+                        <td>@mov.genre</td>
+                        <td>@mov.country</td>
+                        <td>@mov.earOfIssue</td>
+                        <td>@mov.videoQuality</td>
+                        <td>@mov.size</td>
+                        <td>@mov.commentIndex</td>
+                        <td>@mov.downloads</td>
+                        <td><a href="@mov.pathDownLoad" >Download</a></td>
+                    </tr>
+                    <script>
+                        counter(); //changing the color of a row in a table                       
+                    </script>
+
+                }
+
+            </tbody>
+        </table>
+    </div>
+    
+</body>
+</html>
