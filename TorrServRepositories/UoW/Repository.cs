@@ -31,9 +31,16 @@ namespace TorrServRepositories.UoW
         }
 
         public T FirstOrDefault(IEnumerable<T> obj)
-        {
+        {            
             return obj.FirstOrDefault();
         }
+
+                public T FirstOrDefault_(System.Linq.Expressions.Expression<Func<T, bool>> predicate)
+                {
+            
+                    return _table.FirstOrDefault(predicate);
+                }
+
 
         public IEnumerable<T> GetAll()
         {

@@ -22,19 +22,20 @@ namespace MoviesDownloader
             _moviesGetterService = moviesGetterService;
         }
 
-        public async Task<bool> SaveMov()
+        public void SaveMov()
         {
+            Log.Information($"(MoviesDownloader.SaveMovies.SaveMov start){Environment.NewLine}at {DateTime.Now}{Environment.NewLine}");
             try
             {
                 _unitOfWork.torrentMove.AddRange(_moviesGetterService.GetMovies());
                 _unitOfWork.Save();
-                Log.Information($"(MoviesDownloader.SaveMovies.SaveMov){Environment.NewLine}  New movies have been uploaded and saved to DB  at {DateTime.Now}{Environment.NewLine}");
-                return true;                
+                Log.Information($"(MoviesDownloader.SaveMovies.SaveMov finished){Environment.NewLine}  New movies have been uploaded and saved to DB  at {DateTime.Now}{Environment.NewLine}");
+                               
             }
             catch (Exception ex)
             {
                 Log.Error($"(MoviesDownloader.SaveMovies.SaveMov){Environment.NewLine}Get and Save movies was fail with exception:at {DateTime.Now}{Environment.NewLine}{ex.Message}");
-                return false;
+                
             }
         }
     }

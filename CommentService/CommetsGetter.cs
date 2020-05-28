@@ -105,22 +105,23 @@ namespace CommentService
                 }
                 else
                 {
-                    try
+                    
+                    var nodesTagImg = item.SelectNodes(".//img");
+                    if (nodesTagImg!=null)
                     {
                         foreach (var imgTag in item.SelectNodes(".//img"))//remove child nodes include smiles
                         {
                             imgTag.Remove();
                         }
                     }
-                    catch (Exception) { }
-                    try
+                    var divClassQWrap = item.SelectNodes(".//div[@class='q-wrap']");
+                    if (divClassQWrap!=null)
                     {
                         foreach (var wrap in item.SelectNodes(".//div[@class='q-wrap']"))//remove child nodes include wraps
                         {
                             wrap.Remove();
                         }
-                    }
-                    catch (Exception) { }
+                    }                 
 
                     string comment = CleanerComment(item.InnerText);
                     if (!(comment== "" || comment ==" "))

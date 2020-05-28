@@ -1,44 +1,50 @@
 ﻿@model IEnumerable<TorrServData.Models.TorrentMovie>
 @{
+    //Layout = null;
     ViewData["Title"] = "Home Page";
 }
 
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <title>Bootstrap Example</title>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
-    <script src="~/js/homeindex.js"></script>
-
+<head>   
+    @*<script src="~/js/scroll.js"></script>*@
 </head>
-<body>
-
-   
-    <div class="container">
-        <table class="table">
+<body>   
+    <div class="btn-group">         
+        <table id="dataTable" class="table">
             <thead>
                 <tr>
-                    <th>Title</th>
-                    <th>Genre</th>
-                    <th>Country</th>
-                    <th>EarOfIssue</th>
-                    <th>VideoQuality</th>
-                    <th>Size</th>
-                    <th>CommIndex</th>
-                    <th>Downloads</th>
-                    <th>PathDowLoad</th>
+                    <th><button id="Btn_Title" type="button" class="btn btn-dark text-white">Title</button></th>
+                    <th><button id="Btn_Genre" type="button" class="btn btn-dark"> Genre </button></th>
+                    <th><button id="Btn_Country" type="button" class="btn btn-dark">Country</button></th>
+                    <th><button id="Btn_EarOfIssue" type="button" class="btn btn-dark">EarOfIssue</button></th>
+                    <th><button id="Btn_VideoQuality" type="button" class="btn btn-dark">VideoQuality</button></th>
+                    <th><button id="Btn_Size" type="button" class="btn btn-dark">Size</button></th>
+                    <th><button id="Btn_CommentIndex" class="btn btn-dark">CommIndex</button></th>
+                    <th><button id="Btn_Downloads" type="button" class="btn btn-dark">Downloads</button></th>
+                    <th><button id="Btn_PathDowLoad" type="button" class="btn btn-dark">PathDowLoad</button></th>
+                </tr>   
+                @*<tr>                    
+                    <td><div class="btn text-white">Enter a search parameter:</div></td>
+                </tr>*@
+                <tr>                   
+                    <th><input id="Inp_Title" class="btn btn-dark text-white" size="12" /></th>
+                    <th><input id="Inp_Genre" class="btn btn-dark text-white" size="4" /></th>
+                    <th><input id="Inp_Country" class="btn btn-dark text-white" size="3" /></th>
+                    <th><input id="Inp_EarOfIssue" class="btn btn-dark text-white" size="7" /></th>
+                    <th><input id="Inp_VideoQuality" class="btn btn-dark text-white" size="7" /></th>
+                    <th><input id="Inp_Size" class="btn btn-dark text-white" size="7" /></th>
+                    <th><input id="Inp_CommentIndex" class="btn btn-dark text-white" size="7" value="min" name="name" /></th>
+                    <th><input id="Inp_Downloads" class="btn btn-dark text-white" size="7" /></th>
+                    <th><input id="Inp_PathDowLoad" class="btn btn-dark text-white" size="8" /></th>
                 </tr>
             </thead>
-            <tbody>
+            <tbody id="moviescontainer">
 
                 @foreach (var mov in Model)
                 {
 
-                    <tr class="StrTab">
+                    <tr id="moviePack" class="btn-dark">
                         <td>@mov.title</td>
                         <td>@mov.genre</td>
                         <td>@mov.country</td>
@@ -47,17 +53,18 @@
                         <td>@mov.size</td>
                         <td>@mov.commentIndex</td>
                         <td>@mov.downloads</td>
-                        <td><a href="@mov.pathDownLoad" >Download</a></td>
+                        <td><a href="@mov.pathDownLoad">Download</a></td>
                     </tr>
-                    <script>
-                        counter(); //changing the color of a row in a table                       
-                    </script>
+
 
                 }
 
             </tbody>
         </table>
     </div>
-    
+    <div id="dataTable">
+        <tbody></tbody>
+    </div>
+
 </body>
 </html>

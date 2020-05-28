@@ -14,15 +14,19 @@ namespace MoviesDownloader
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly ISaveCommentsToDb _saveCommentsToDb;
+        private readonly ICommentHanlder _commentHanlder;
 
-        
+
         private List<TorrentMovie> torrentMoves = new List<TorrentMovie>();
 
-        public MoviesGetterService(IUnitOfWork unitOfWork, ISaveCommentsToDb saveCommentsToDb)
+        public MoviesGetterService(IUnitOfWork unitOfWork, ISaveCommentsToDb saveCommentsToDb, ICommentHanlder commentHanlder)
         {
             _unitOfWork = unitOfWork;
             _saveCommentsToDb = saveCommentsToDb;
+            _commentHanlder = commentHanlder;
         }
+
+
 
 
         /* //альтернативное решение проблемы с кодировкой
@@ -32,7 +36,7 @@ namespace MoviesDownloader
             htmlDocument.LoadHtml(str);*/
         public IEnumerable<TorrentMovie> GetMovies()
         {
-            Log.Information($"MoviesDownloader.MoviesGetterService.Start GetMovies() at {DateTime.Now}{Environment.NewLine}");            
+            Log.Information($"MoviesDownloader.MoviesGetterService.GetMovies() start  at {DateTime.Now}{Environment.NewLine}");            
             var urls = GetPaths();
             foreach (var url in urls)
             {
@@ -41,9 +45,7 @@ namespace MoviesDownloader
                 if (nodes != null)
                 {
                     foreach (var node in nodes)
-                    {
-                        
-
+                    {                        
                         var NodeId = node.Id.ToString();
                         if (NodeId == "tr-5836841")//ignore post"Открылся новый сайт новинок"
                         {
@@ -78,7 +80,7 @@ namespace MoviesDownloader
                             {
                                 processedMovie.lastPost = lastPost;
                                 _saveCommentsToDb.SaveCommens(processedMovie);
-                                
+                                _commentHanlder.GetCommentIndex(processedMovie);
                             }
                             continue;
                         }
@@ -129,7 +131,7 @@ namespace MoviesDownloader
                     }
                 }
             }
-            Log.Information($"Finish GetMovies() at {DateTime.Now}{Environment.NewLine}");            
+            Log.Information($"MoviesDownloader.MoviesGetterService.GetMovies() finished  at {DateTime.Now}{Environment.NewLine}");            
             return torrentMoves;
 
         }

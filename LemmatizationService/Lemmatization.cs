@@ -102,9 +102,9 @@ namespace LemmatizationService
             List<string> listStrings = new List<string>();
             try
             {
-                if (text.Length >= 30000)
+                if (text.Length >= 50000)
                 {
-                    Regex reg = new Regex(".{0,30000}");//the limitations of characters of Ispras request
+                    Regex reg = new Regex(".{0,50000}");//the limitations of characters of Ispras request
                     var splitText = reg.Matches(text);
                     foreach (var item in splitText)
                     {
@@ -174,13 +174,15 @@ namespace LemmatizationService
                         System.Diagnostics.Debug.WriteLine($"LemmatizationService.Lemmatization.GetLemma() worked with error {DateTime.Now}{Environment.NewLine}" +
                         $"Lemms from string {Environment.NewLine}" +
                         $"{splitStr}{Environment.NewLine} equally null{ Environment.NewLine}" +                        
-                        $"key={key}" +
+                        $"key={key}{ Environment.NewLine}" +
                         $"Performing the {_counter} attempt of response  { Environment.NewLine}");
-                        Thread.Sleep(30000);
                         System.Diagnostics.Debug.WriteLine($"Thread.Sleep(30000)");
+                        Thread.Sleep(30000);
+                        
                         if (_counter == 3)
                         {
-                            Thread.Sleep(60000);
+                            System.Diagnostics.Debug.WriteLine($"Thread.Sleep(60000)");
+                            Thread.Sleep(30000);
                             Log.Information("Ups!!");
                             System.Diagnostics.Debug.WriteLine($"Thread.Sleep(60000)");
                             GetKeyIspras();

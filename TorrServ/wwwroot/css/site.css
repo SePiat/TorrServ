@@ -6,11 +6,15 @@ a.navbar-brand {
   text-align: center;
   word-break: break-all;
 }
+#test {
+    text-align:center;
+    text-decoration:double;
+}
 
 /* Sticky footer styles
 -------------------------------------------------- */
 html {
-  font-size: 14px;
+    font-size: 14px;
 }
 @media (min-width: 768px) {
   html {
@@ -37,13 +41,23 @@ button.accept-policy {
 /* Sticky footer styles
 -------------------------------------------------- */
 html {
-  position: relative;
-  min-height: 100%;
+    position: relative;
+    min-height: 100%;
+    text-emphasis-color:red;
+    
 }
-
+* {
+    color:white;
+}
 body {
-  /* Margin bottom by footer height */
-  margin-bottom: 60px;
+    
+    margin-bottom: 60px;
+    background-image: url("https://cdn.pixabay.com/photo/2015/11/19/07/27/star-1050487_960_720.jpg");
+    opacity: 0.6;
+    
+}
+input {
+    opacity: 0.5;
 }
 .footer {
   position: absolute;
@@ -53,4 +67,7 @@ body {
   /* Set the fixed height of the footer here */
   height: 60px;
   line-height: 60px; /* Vertically center the text there */
+}
+.table {
+   text-emphasis-color:aqua;
 }

@@ -48,13 +48,15 @@ namespace TorrServ
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(
                     Configuration.GetConnectionString("DefaultConnection"), b => b.MigrationsAssembly("TorrServ")));
-            services.AddDefaultIdentity<IdentityUser>()
+            services.AddDefaultIdentity<IdentityUser>().AddRoles<IdentityRole>()
                 .AddDefaultUI(UIFramework.Bootstrap4)
                 .AddEntityFrameworkStores<ApplicationDbContext>();
 
             //add hangfire
-           // services.AddHangfire(config =>
-                    // config.UseSqlServerStorage(Configuration.GetConnectionString("DefaultConnection")));
+            // services.AddHangfire(config =>
+            // config.UseSqlServerStorage(Configuration.GetConnectionString("DefaultConnection")));
+            
+
 
             services.AddTransient<IGenericRepository<TorrentMovie>, TorrentMoveRepository>();
             services.AddTransient<IGenericRepository<SourceOfMovies>, SourceOfMoviesRepository>();
@@ -67,10 +69,10 @@ namespace TorrServ
             services.AddTransient<ISaveCommentsToDb, SaveCommentsToDb>();
             services.AddTransient<ISaveMovies, SaveMovies>();
             services.AddTransient<IAFINNService, AFINN>();
-            services.AddScoped<ILemmatization, Lemmatization>();
-            //services.AddSingleton<ILemmatization, Lemmatization>();
-            //services.AddTransient<ILemmatization, Lemmatization>();
+            services.AddScoped<ILemmatization, Lemmatization>();            
             services.AddTransient<ICommentHanlder, CommentHanlder>();
+
+            
 
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);

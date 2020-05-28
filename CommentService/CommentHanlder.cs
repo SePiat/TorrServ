@@ -22,29 +22,21 @@ namespace CommentService
             _afinn = afinn;
         }
 
-        public void GetCommentIndex()
+        public void GetCommentIndex(TorrentMovie movie)
         {
             Log.Information($"CommentService.CommentHanlder.GetCommentIndex() started at {DateTime.Now}{ Environment.NewLine}");
             System.Diagnostics.Debug.WriteLine($"CommentService.CommentHanlder.GetCommentIndex() started at {DateTime.Now}{ Environment.NewLine}");
-            int countHanlerMovies = 10;
+            
             int count = 0;
             try
             {
                 Dictionary<string, int> dictFromLemms = new Dictionary<string, int>();
                 Dictionary<string, string> DictionaryAffin = _afinn.GetDictionary();
-                var movies = _unitOfWork.torrentMove.ToList();                
-                foreach (var movie in movies)
-                {
-                    
-                    if (count==countHanlerMovies)
-                    {
-                        break;
-                    }
+                var movies = _unitOfWork.torrentMove.ToList();
+               
                     int countAffinWordInText = 0;
                     int IndexWordsFromText = 0;
-                    int CommentIndex = 0;
-                    if (movie.commentIndex==0)
-                    {
+                    int CommentIndex = 0;                    
                         var comments = _unitOfWork.comments.Where(x => x.movieId.Id.ToString().Equals(movie.Id.ToString()));
                         if (comments != null)
                         {
@@ -73,17 +65,17 @@ namespace CommentService
                                     movie.commentIndex = CommentIndex;
 
                                 }
+                                else
+                                {
+                                    CommentIndex = Convert.ToInt32(Regex.Replace(movie.downloads, ",", "")) / 1000;
+                                    movie.commentIndex = CommentIndex;                                   
+                                }
 
                             }
                             else
                             {
-                                CommentIndex= Convert.ToInt32(Regex.Replace(movie.downloads, ",", "")) / 1000;
+                                CommentIndex = Convert.ToInt32(Regex.Replace(movie.downloads, ",", "")) / 1000;
                                 movie.commentIndex = CommentIndex;
-
-                                if (CommentIndex==0)//////
-                                {
-                                    movie.commentIndex =1;
-                                }
                             }
                         }
                         else
@@ -92,11 +84,10 @@ namespace CommentService
                                 $"DB not contain comments by movie {movie.title}{ Environment.NewLine} ");
                             System.Diagnostics.Debug.WriteLine($"CommentService.CommentHanlder.GetCommentIndex() finish at {DateTime.Now}{ Environment.NewLine}" +
                                 $"DB not contain comments by movie {movie.title}{ Environment.NewLine} ");
-                            continue;
-                        }
-                        
-                    }
-                }
+                            CommentIndex = Convert.ToInt32(Regex.Replace(movie.downloads, ",", "")) / 1000;
+                            movie.commentIndex = CommentIndex;
+                        }                    
+               
                 _unitOfWork.Save();
                 Log.Information($"CommentService.CommentHanlder.GetCommentIndex() finish at {DateTime.Now}{ Environment.NewLine}");
                 System.Diagnostics.Debug.WriteLine($"CommentService.CommentHanlder.GetCommentIndex() finish at {DateTime.Now}{ Environment.NewLine}");
@@ -105,7 +96,7 @@ namespace CommentService
             catch (Exception ex)
             {
                 Log.Error($"CommentService.CommentHanlder.GetCommentIndex() worked with error {DateTime.Now}" +
-                    $"{Environment.NewLine}{ex}{Environment.NewLine}");                
+                    $"{Environment.NewLine}{ex}{Environment.NewLine}");
             }
         }
 

@@ -4,6 +4,6 @@ namespace TorrServCore
 {
     public interface ISaveMovies
     {
-        Task<bool> SaveMov();
+         void SaveMov();
     }
 }
