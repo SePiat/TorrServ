@@ -49,12 +49,15 @@ html {
 * {
     color:white;
 }
+.title{
+    width:200px;
+}
+
 body {
-    
+    width: 100%;
     margin-bottom: 60px;
     background-image: url("https://cdn.pixabay.com/photo/2015/11/19/07/27/star-1050487_960_720.jpg");
     opacity: 0.6;
-    
 }
 input {
     opacity: 0.5;

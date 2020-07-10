@@ -14,7 +14,7 @@ namespace TorrServData.Models
         public string videoQuality { get; set; }
         public string size { get; set; }
         public int commentIndex { get; set; }
-        public string downloads { get; set; }
+        public int downloads { get; set; }
         public string pathDownLoad { get; set; }
         public string movieId { get; set; }
         public int amountOfComments { get; set; }

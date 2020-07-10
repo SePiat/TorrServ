@@ -225,7 +225,7 @@ namespace TorrServ.Data.Migrations
 
                     b.Property<string>("country");
 
-                    b.Property<string>("downloads");
+                    b.Property<int>("downloads");
 
                     b.Property<string>("earOfIssue");
 

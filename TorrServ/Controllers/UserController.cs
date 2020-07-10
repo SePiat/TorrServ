@@ -22,7 +22,7 @@ namespace TorrServ.Controllers
         // GET: /<controller>/
         [Authorize(Roles = "admin")]
         public IActionResult Index() => View(_userManager.Users.ToList());
-        [Authorize(Roles = "admin")]
+       [Authorize(Roles = "admin")]
         public IActionResult Create() => View();
         [Authorize(Roles = "admin")]
         [HttpPost]

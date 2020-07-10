@@ -39,6 +39,7 @@ namespace CommentService
                     Log.Information($"CommentService.SaveCommtnts.SaveComments().GetComments(movie){Environment.NewLine}" +
                         $"Amount of comments not change or GetComments(movie) equal null{Environment.NewLine}{movie.title}{Environment.NewLine}{movie.movieId} " +
                             $"{Environment.NewLine}{movie.pathDownLoad}  {DateTime.Now}{Environment.NewLine}");
+                    
                 }
                 else
                 {

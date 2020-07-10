@@ -4,6 +4,7 @@
     <TargetFramework>netcoreapp2.2</TargetFramework>
     <UserSecretsId>aspnet-TorrServ-FA191E85-2DFD-4C99-A3DC-A1097287A590</UserSecretsId>
     <AspNetCoreHostingModel>InProcess</AspNetCoreHostingModel>
+    <StartupObject />
   </PropertyGroup>
 
 

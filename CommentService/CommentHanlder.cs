@@ -26,68 +26,59 @@ namespace CommentService
         {
             Log.Information($"CommentService.CommentHanlder.GetCommentIndex() started at {DateTime.Now}{ Environment.NewLine}");
             System.Diagnostics.Debug.WriteLine($"CommentService.CommentHanlder.GetCommentIndex() started at {DateTime.Now}{ Environment.NewLine}");
-            
-            int count = 0;
+
             try
             {
                 Dictionary<string, int> dictFromLemms = new Dictionary<string, int>();
                 Dictionary<string, string> DictionaryAffin = _afinn.GetDictionary();
-                var movies = _unitOfWork.torrentMove.ToList();
-               
-                    int countAffinWordInText = 0;
-                    int IndexWordsFromText = 0;
-                    int CommentIndex = 0;                    
-                        var comments = _unitOfWork.comments.Where(x => x.movieId.Id.ToString().Equals(movie.Id.ToString()));
-                        if (comments != null)
+                int countAffinWordInText = 0;
+                int IndexWordsFromText = 0;
+                int CommentIndex = 0;
+                var comments = _unitOfWork.comments.Where(x => x.movieId.Id.ToString().Equals(movie.Id.ToString()));
+                if (comments != null)
+                {                   
+                    string commentsString = Regex.Replace(BuildSringFromComments(comments), @"\s{2}", " ");
+                    System.Diagnostics.Debug.WriteLine($"CommentService.CommentHanlder.GetCommentIndex() work with movie  {movie.title}{ Environment.NewLine}{movie.Id}");
+                    Log.Information($"CommentService.CommentHanlder.GetCommentIndex() work with movie  {movie.title}{ Environment.NewLine}{movie.Id}");
+
+                    dictFromLemms = _lemmatization.GetDictFromLemms(commentsString);
+                    if (dictFromLemms != null)
+                    {
+                        foreach (var wordFromText in dictFromLemms)
                         {
-                            count++;
-                            string commentsString = Regex.Replace(BuildSringFromComments(comments), @"\s{2}", " ");
-                            System.Diagnostics.Debug.WriteLine($"CommentService.CommentHanlder.GetCommentIndex() work with movie  {movie.title}{ Environment.NewLine}{movie.Id}");
-                            Log.Information($"CommentService.CommentHanlder.GetCommentIndex() work with movie  {movie.title}{ Environment.NewLine}{movie.Id}");
-
-                            dictFromLemms = _lemmatization.GetDictFromLemms(commentsString);
-                            if (dictFromLemms != null)
+                            if (DictionaryAffin.ContainsKey(wordFromText.Key))
                             {
-                                foreach (var wordFromText in dictFromLemms)
-                                {
-                                    if (DictionaryAffin.ContainsKey(wordFromText.Key))
-                                    {
-                                        int AffinWordValue = Convert.ToInt32(DictionaryAffin[wordFromText.Key]) + 5;//remove negative values
-                                        IndexWordsFromText += AffinWordValue * wordFromText.Value;
-                                        countAffinWordInText += wordFromText.Value;
-                                    }
-                                }
-                                if (countAffinWordInText != 0)
-                                {
-                                    int downloadsToInt = Convert.ToInt32(Regex.Replace(movie.downloads, ",", ""));
-                                    int downloadIndex = downloadsToInt / 1000;
-                                    CommentIndex = Convert.ToInt32(Math.Round((double)IndexWordsFromText / countAffinWordInText, 3)) + downloadIndex;
-                                    movie.commentIndex = CommentIndex;
-
-                                }
-                                else
-                                {
-                                    CommentIndex = Convert.ToInt32(Regex.Replace(movie.downloads, ",", "")) / 1000;
-                                    movie.commentIndex = CommentIndex;                                   
-                                }
-
-                            }
-                            else
-                            {
-                                CommentIndex = Convert.ToInt32(Regex.Replace(movie.downloads, ",", "")) / 1000;
-                                movie.commentIndex = CommentIndex;
+                                int AffinWordValue = Convert.ToInt32(DictionaryAffin[wordFromText.Key]) + 5;//remove negative values
+                                IndexWordsFromText += AffinWordValue * wordFromText.Value;
+                                countAffinWordInText += wordFromText.Value;
                             }
                         }
-                        else
+                        if (countAffinWordInText != 0)
                         {
-                            Log.Information($"CommentService.CommentHanlder.GetCommentIndex() finish at {DateTime.Now}{ Environment.NewLine}" +
-                                $"DB not contain comments by movie {movie.title}{ Environment.NewLine} ");
-                            System.Diagnostics.Debug.WriteLine($"CommentService.CommentHanlder.GetCommentIndex() finish at {DateTime.Now}{ Environment.NewLine}" +
-                                $"DB not contain comments by movie {movie.title}{ Environment.NewLine} ");
-                            CommentIndex = Convert.ToInt32(Regex.Replace(movie.downloads, ",", "")) / 1000;
+                            int downloadsToInt = movie.downloads;                            
+                            CommentIndex = Convert.ToInt32(Math.Round((double)IndexWordsFromText / countAffinWordInText, 3) * 10)+movie.amountOfComments;
                             movie.commentIndex = CommentIndex;
-                        }                    
-               
+
+                        }
+                        else
+                        {                            
+                            movie.commentIndex = movie.amountOfComments;
+                        }
+                    }
+                    else
+                    {                      
+                        movie.commentIndex = movie.amountOfComments;
+                    }
+                }
+                else
+                {
+                    Log.Information($"CommentService.CommentHanlder.GetCommentIndex() finish at {DateTime.Now}{ Environment.NewLine}" +
+                        $"DB not contain comments by movie {movie.title}{ Environment.NewLine} ");
+                    System.Diagnostics.Debug.WriteLine($"CommentService.CommentHanlder.GetCommentIndex() finish at {DateTime.Now}{ Environment.NewLine}" +
+                        $"DB not contain comments by movie {movie.title}{ Environment.NewLine} ");                    
+                    movie.commentIndex = 0;
+                }
+
                 _unitOfWork.Save();
                 Log.Information($"CommentService.CommentHanlder.GetCommentIndex() finish at {DateTime.Now}{ Environment.NewLine}");
                 System.Diagnostics.Debug.WriteLine($"CommentService.CommentHanlder.GetCommentIndex() finish at {DateTime.Now}{ Environment.NewLine}");

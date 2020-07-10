@@ -12,30 +12,24 @@ using TorrServData.Models;
 
 namespace TorrServ.Controllers
 {
-   
+
 
     public class AdminController : Controller
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly ISaveMovies _saveMovies;
-        private readonly UserManager<IdentityUser> _userManager;
-        private readonly RoleManager<IdentityRole> _roleManager;
-        private readonly UserViewModel userViewModel;
+        private readonly ICommentHanlder _commentHanlder;
 
-        
-
-
-
-        public AdminController(ISaveMovies saveMovies, IUnitOfWork unitOfWork, RoleManager<IdentityRole> roleManager, UserManager<IdentityUser> userManager)
+        public AdminController(IUnitOfWork unitOfWork, ISaveMovies saveMovies, ICommentHanlder commentHanlder)
         {
             _unitOfWork = unitOfWork;
-            _userManager = userManager;
-            _roleManager = roleManager;
             _saveMovies = saveMovies;
-            
+            _commentHanlder = commentHanlder;
         }
+
         [Authorize(Roles = "admin")]
         public IActionResult Index() => View();
+
         [Authorize(Roles = "admin")]
         public async Task<IActionResult> UpdateDatabase()
         {
@@ -44,6 +38,20 @@ namespace TorrServ.Controllers
 
         }
 
-        
+        [Authorize(Roles = "admin")]
+        public async Task<IActionResult> UpdateCommIndex()
+        {
+            var movies = _unitOfWork.torrentMove.Where(x=>x.commentIndex==1000).ToList();
+            await Task.Run(() => 
+            {
+                foreach (var movie in movies)
+                {
+                    _commentHanlder.GetCommentIndex(movie);
+                }
+            });           
+            return RedirectToAction("Index");
+        }
+
+
     }
 }

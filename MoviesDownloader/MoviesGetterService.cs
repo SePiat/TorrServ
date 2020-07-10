@@ -73,14 +73,14 @@ namespace MoviesDownloader
                         var processedMovie = _unitOfWork.torrentMove.AsQueryable().FirstOrDefault(p => p.pathDownLoad.Equals(SubPathDownLoad));//Check to be movie in DB
                         if (processedMovie != null)//if movie exist in the DB
                         {
-                            //var lastPost = node.SelectSingleNode(".//td[@class='vf-col-last-post tCenter small nowrap']").Element("p").InnerText;
-                            var lastPost = node.SelectSingleNode(".//td[@class='vf-col-last-post tCenter small nowrap']").SelectSingleNode(".//p").InnerText;
                             
-                            if (processedMovie.lastPost!= lastPost||processedMovie.amountOfComments==0)
+                            var lastPost = node.SelectSingleNode(".//td[@class='vf-col-last-post tCenter small nowrap']").SelectSingleNode(".//p").InnerText;
+                                                       
+                            if (processedMovie.lastPost!= lastPost||processedMovie.amountOfComments==0||processedMovie.commentIndex>2000)
                             {
                                 processedMovie.lastPost = lastPost;
-                                _saveCommentsToDb.SaveCommens(processedMovie);
-                                _commentHanlder.GetCommentIndex(processedMovie);
+                            _saveCommentsToDb.SaveCommens(processedMovie);
+                            _commentHanlder.GetCommentIndex(processedMovie);
                             }
                             continue;
                         }
@@ -99,7 +99,8 @@ namespace MoviesDownloader
                                 var _videoQuality = Regex.Replace(Regex.Match(additInformFromTitle, @"[A-Z]+.+]").ToString(), "]", "");
                                 var _size = Regex.Replace(node.SelectSingleNode(".//a[@class='small f-dl dl-stub']").InnerText.ToString(), @"&nbsp;", "");
                                 var _commentIndex = 0;
-                                var _downloads = Regex.Replace(node.SelectSingleNode(".//p[@title='Торрент скачан']").InnerText, @"\s+", "").ToString();
+                                string _strDownloads = Regex.Replace(node.SelectSingleNode(".//p[@title='Торрент скачан']").InnerText, @"\D+", "").ToString();
+                                int _downloads = Convert.ToInt32(_strDownloads);
                                 var _pathDownLoad = "https://rutracker.org/forum/" + node.SelectSingleNode(".//a[@class='torTopic bold tt-text']").Attributes["href"].Value;
                                 var _lastPost = node.SelectSingleNode(".//td[@class='vf-col-last-post tCenter small nowrap']").Element("p").InnerText;
                                 if (_genre != null)
